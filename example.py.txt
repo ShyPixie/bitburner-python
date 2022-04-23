@@ -1,0 +1,4 @@
+async def main():
+    ns.tprint('Waiting 2s...')
+    await ns.sleep(2000)
+    ns.tprint('I slept for 2s... 💤')
