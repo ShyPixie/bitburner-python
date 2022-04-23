@@ -6,8 +6,6 @@ const brythonScripts = [
     'https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js',
 ]
 
-const brythonScriptId = crypto.randomUUID()
-
 /** @param { import("~/ns").NS } ns */
 export async function main(ns) {
     // Install Brython
@@ -52,7 +50,8 @@ export async function main(ns) {
         throw new Error(`The file specified doesn't exist`)
     }
 
-    const main_func = ns.read(program).replaceAll('\n    ', '\n        ')
+    const mainFunc = ns.read(program).replaceAll('\n    ', '\n        ')
+    const brythonScriptId = crypto.randomUUID()
 
     const brythonScript = `
 from browser import window, aio
@@ -61,8 +60,7 @@ async def handler():
     brythonScriptId = "${brythonScriptId}"
     ns = window.__brythonNs[brythonScriptId]
 
-    ${main_func}
-        window.__brythonNs[brythonScriptId] = { 'complete': True, 'result': 'Closed ❌' }
+    ${mainFunc}
 
     await main()
 
