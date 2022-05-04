@@ -63,14 +63,16 @@ async def handler():
     ${mainFunc}
 
     await main()
+    window.__brythonNs[brythonScriptId] = { 'complete': True, 'result': 'Success' }
 
 aio.run(handler())
 `
 
-    // Save NS
     if (!win.__brythonNs) win.__brythonNs = {}
-	win.__brythonNs[brythonScriptId] = ns
-
-    // Run program
+    win.__brythonNs[brythonScriptId] = ns
     eval(win.__BRYTHON__.python_to_js(brythonScript))
+
+    while (!win.__brythonNs || !win.__brythonNs[brythonScriptId]?.complete) {
+        await ns.asleep(50)
+    }
 }
