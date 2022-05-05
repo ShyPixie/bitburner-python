@@ -50,20 +50,20 @@ export async function main(ns) {
         throw new Error(`The file specified doesn't exist`)
     }
 
-    const mainFunc = ns.read(program).replaceAll('\n    ', '\n        ')
+    const mainScript = ns.read(program)
     const brythonScriptId = crypto.randomUUID()
 
     const brythonScript = `
 from browser import window, aio
 
+brythonScriptId = "${brythonScriptId}"
+ns = window.__brythonNs[brythonScriptId]
+
+${mainScript}
+
 async def handler():
-    brythonScriptId = "${brythonScriptId}"
-    ns = window.__brythonNs[brythonScriptId]
-
-    ${mainFunc}
-
     await main()
-    window.__brythonNs[brythonScriptId] = { 'complete': True, 'result': 'Success' }
+    window.__brythonNs[brythonScriptId] = { 'complete': True }
 
 aio.run(handler())
 `
