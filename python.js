@@ -71,7 +71,9 @@ aio.run(handler())
     if (!win.__brythonNs) win.__brythonNs = {}
     win.__brythonNs[brythonScriptId] = ns
 
-    ns.window; ns.document // reserve ram to avoid calculation errors
+    ns.window; ns.document // reserve RAM to avoid calculation errors
+	ns.disableLog('asleep')
+	ns.clearLog()
 
     eval(win.__BRYTHON__.python_to_js(brythonScript))
 
