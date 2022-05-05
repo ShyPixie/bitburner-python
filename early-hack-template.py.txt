@@ -1,0 +1,17 @@
+async def main():
+    target = ns.args[1]
+    moneyThresh = ns.getServerMaxMoney(target) * 0.75
+    securityThresh = ns.getServerMinSecurityLevel(target) + 5
+
+    if ns.fileExists("BruteSSH.exe", "home"):
+        ns.brutessh(target)
+
+    ns.nuke(target)
+
+    while True:
+        if ns.getServerSecurityLevel(target) > securityThresh:
+            await ns.weaken(target)
+        elif ns.getServerMoneyAvailable(target) < moneyThresh:
+            await ns.grow(target)
+        else:
+            await ns.hack(target)
