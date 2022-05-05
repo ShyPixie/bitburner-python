@@ -42,7 +42,7 @@ export async function main(ns) {
 
     const program = ns.args[0]
 
-    if (!ns.args[0]) {
+    if (!program) {
         throw new Error(`You must specify a program to run`)
     }
 
@@ -72,8 +72,8 @@ aio.run(handler())
     win.__brythonNs[brythonScriptId] = ns
 
     ns.window; ns.document // reserve RAM to avoid calculation errors
-	ns.disableLog('asleep')
-	ns.clearLog()
+    ns.disableLog('asleep')
+    ns.clearLog()
 
     eval(win.__BRYTHON__.python_to_js(brythonScript))
 
